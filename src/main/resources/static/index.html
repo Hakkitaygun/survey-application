@@ -70,21 +70,24 @@
     </div>
 
     <script>
-        // --- 1. SAYFA YÜKLENDİĞİNDE ANKETLERİ GETİR ---
+        // Canlı Backend API Temel Adresi
+        const API_BASE_URL = 'https://survey-application-q4ko.onrender.com';
+
+        // --- 1. SAYFA YÜKLENDİĞİNDE OTURUM VE ANKET KONTROLÜ ---
         document.addEventListener("DOMContentLoaded", fetchSurveys);
 
         async function fetchSurveys() {
             const grid = document.getElementById('surveyGrid');
             
             try {
-                const response = await fetch('/api/v1/surveys', {
+                const response = await fetch(`${API_BASE_URL}/api/v1/surveys`, {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' },
                     credentials: 'include' 
                 });
 
+                // Eğer oturum açılmamışsa veya yetki yoksa doğrudan giriş sayfasına yönlendir
                 if (response.status === 401) {
-                    alert("Oturum süreniz dolmuş. Güvenliğiniz için giriş sayfasına yönlendiriliyorsunuz.");
                     window.location.href = 'login.html';
                     return;
                 }
@@ -130,7 +133,7 @@
             const messageDiv = document.getElementById('message');
 
             try {
-                const response = await fetch('/api/v1/surveys', {
+                const response = await fetch(`${API_BASE_URL}/api/v1/surveys`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     credentials: 'include',
@@ -138,7 +141,6 @@
                 });
 
                 if (response.status === 401) {
-                    alert("Oturum süreniz dolmuş. Lütfen tekrar giriş yapın.");
                     window.location.href = 'login.html';
                     return;
                 }
