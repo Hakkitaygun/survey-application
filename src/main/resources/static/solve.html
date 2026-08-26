@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anket Katılımı</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; margin: 0; padding: 0; }
+        .navbar { background-color: #fff; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .navbar h2 { margin: 0; color: #333; }
+        
+        .container { max-width: 800px; margin: 30px auto; padding: 20px; }
+        .survey-header { background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); margin-bottom: 20px; border-left: 5px solid #28a745; }
+        .survey-header h2 { margin-top: 0; color: #333; }
+        
+        .question-card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 15px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; color: #444; font-size: 14px; }
+        input[type="text"] { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 14px; }
+        
+        .btn-submit { background-color: #28a745; color: white; border: none; padding: 12px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; font-size: 16px; margin-top: 20px; transition: background 0.2s; }
+        .btn-submit:hover { background-color: #218838; }
+        
+        .center-box { background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); text-align: center; margin-top: 50px; }
+        .hidden { display: none !important; }
+        .error-icon { font-size: 48px; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <h2>Anket Çözüm Platformu</h2>
+    </div>
+
+    <div class="container">
+        
+        <!-- Yükleniyor Ekranı -->
+        <div id="loadingBox" class="center-box">
+            <p style="color: #666; font-size: 16px; margin: 0;">Anket yükleniyor, lütfen bekleyin...</p>
+        </div>
+
+        <!-- Hata Ekranı -->
+        <div id="errorBox" class="center-box hidden">
+            <div class="error-icon">⚠️</div>
+            <h2 id="errorTitle" style="color: #d9534f; margin-bottom: 10px;">Erişim Reddedildi</h2>
+            <p id="errorMessage" style="color: #666; font-size: 15px;"></p>
+        </div>
+
+        <!-- Başarı Ekranı -->
+        <div id="successBox" class="center-box hidden">
+            <div style="font-size: 54px; margin-bottom: 15px;">🎉</div>
+            <h2 style="color: #28a745; margin-bottom: 10px;">Teşekkürler!</h2>
+            <p style="color: #666; font-size: 15px;">Anket cevaplarınız başarıyla kaydedildi. Bu bağlantı artık tekrar kullanılamaz.</p>
+        </div>
+
+        <!-- Anket Form Ekranı -->
+        <div id="surveyContent" class="hidden">
+            <div class="survey-header">
+                <h2 id="surveyTitle">Yükleniyor...</h2>
+                <p id="surveyDesc" style="color: #666; margin-bottom: 0; font-size: 14px;"></p>
+            </div>
+
+            <form id="solveForm">
+                <div id="questionsList"></div>
+                <button type="submit" class="btn-submit">Cevapları Gönder</button>
+            </form>
+        </div>
+
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+
+        const loadingBox = document.getElementById('loadingBox');
+        const errorBox = document.getElementById('errorBox');
+        const successBox = document.getElementById('successBox');
+        const surveyContent = document.getElementById('surveyContent');
+        
+        const surveyTitle = document.getElementById('surveyTitle');
+        const surveyDesc = document.getElementById('surveyDesc');
+        const questionsList = document.getElementById('questionsList');
+        const solveForm = document.getElementById('solveForm');
+
+        if (!token) {
+            showError("Geçersiz Bağlantı", "URL içerisinde davetiye token'ı bulunamadı.");
+        } else {
+            fetchSurveyByToken(token);
+        }
+
+        async function fetchSurveyByToken(tokenVal) {
+            try {
+                const response = await fetch(`/api/v1/answers/solve?token=${tokenVal}`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                if (!response.ok) {
+                    const errText = await response.text();
+                    throw new Error(errText || "Geçersiz veya daha önce doldurulmuş anket bağlantısı.");
+                }
+
+                const survey = await response.json();
+                renderSurvey(survey);
+
+            } catch (error) {
+                showError("Erişim Engellendi", error.message);
+            }
+        }
+
+        function renderSurvey(survey) {
+            loadingBox.classList.add('hidden');
+            surveyContent.classList.remove('hidden');
+
+            surveyTitle.textContent = survey.title;
+            surveyDesc.textContent = survey.description || "Lütfen aşağıdaki soruları yanıtlayınız.";
+
+            questionsList.innerHTML = '';
+            survey.questions.forEach((q, index) => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                card.innerHTML = `
+                    <label for="q_${q.id}">Soru ${index + 1}: ${q.text}</label>
+                    <input type="text" id="q_${q.id}" data-question-id="${q.id}" required placeholder="Cevabınızı buraya yazın...">
+                `;
+                questionsList.appendChild(card);
+            });
+        }
+
+        solveForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const inputs = questionsList.querySelectorAll('input');
+            const answers = [];
+
+            inputs.forEach(input => {
+                answers.push({
+                    questionId: parseInt(input.getAttribute('data-question-id')),
+                    answerText: input.value.trim()
+                });
+            });
+
+            const payload = {
+                token: token,
+                answers: answers
+            };
+
+            try {
+                const response = await fetch('/api/v1/answers/submit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errText = await response.text();
+                    throw new Error(errText || "Cevaplar kaydedilirken bir hata oluştu.");
+                }
+
+                surveyContent.classList.add('hidden');
+                successBox.classList.remove('hidden');
+
+            } catch (error) {
+                alert("Hata: " + error.message);
+            }
+        });
+
+        function showError(title, message) {
+            loadingBox.classList.add('hidden');
+            errorBox.classList.remove('hidden');
+            document.getElementById('errorTitle').textContent = title;
+            document.getElementById('errorMessage').textContent = message;
+        }
+    </script>
+</body>
+</html>

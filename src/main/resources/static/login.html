@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anket Uygulaması - Giriş Yap</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-card {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        .login-card h2 {
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+            font-size: 14px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #message {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <h2>Giriş Yap</h2>
+        <form id="loginForm">
+            <div class="input-group">
+                <label for="username">Kullanıcı Adı</label>
+                <input type="text" id="username" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Şifre</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit">Giriş Yap</button>
+        </form>
+        <div id="message"></div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault(); // Sayfanın yenilenmesini engelliyoruz
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const messageDiv = document.getElementById('message');
+
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include', // Oturum çerezini almak için kritik satır
+                    body: JSON.stringify({ username, password })
+                });
+
+                const result = await response.text();
+
+                if (response.ok) {
+                    messageDiv.style.color = 'green';
+                    messageDiv.textContent = "Giriş başarılı! Yönlendiriliyorsunuz...";
+                    
+                    // Başarılı girişten 1 saniye sonra anket paneline yönlendir
+                    setTimeout(() => {
+                        window.location.href = '/index.html'; 
+                    }, 1000);
+                    
+                } else {
+                    messageDiv.style.color = 'red';
+                    messageDiv.textContent = "Giriş başarısız! Kullanıcı adı veya şifre hatalı.";
+                }
+            } catch (error) {
+                messageDiv.style.color = 'red';
+                messageDiv.textContent = "Bir hata oluştu: " + error.message;
+            }
+        });
+    </script>
+
+</body>
+</html>
