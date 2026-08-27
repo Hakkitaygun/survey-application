@@ -5,12 +5,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.example.survey_app.dto.SurveyResponse;
 import com.example.survey_app.entity.Survey;
 import com.example.survey_app.entity.SurveyInvitation;
 import com.example.survey_app.entity.User;
 import com.example.survey_app.repository.SurveyInvitationRepository;
 import com.example.survey_app.repository.SurveyRepository;
 import com.example.survey_app.repository.UserRepository;
+import org.modelmapper.ModelMapper;
 
 import lombok.RequiredArgsConstructor;
 @Service
@@ -19,15 +21,19 @@ public class SurveyServiceImpl implements SurveyService {
     private final SurveyRepository surveyRepository;
     private final UserRepository userRepository;
     private final SurveyInvitationRepository surveyInvitationRepository;
+    private final ModelMapper modelMapper;
 
     @Override
-    public List<Survey> getAllSurveys() {
+    public List<SurveyResponse> getAllSurveys() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = authentication.getName();
         User user = userRepository.findByUsername(currentUsername)
              .orElseThrow(() -> new RuntimeException("Kullanıcı Bulunamadı"));
 
-        return surveyRepository.findByUser(user);
+        List<Survey> surveys = surveyRepository.findByUserWithQuestions(user);
+        return surveys.stream()
+                .map(survey -> modelMapper.map(survey, SurveyResponse.class))
+                .toList();
     }
 
     @Override

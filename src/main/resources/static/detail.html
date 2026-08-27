@@ -79,7 +79,7 @@
     </div>
 
     <script>
-        // URL'den anket ID'sini yakala (Örn: detail.html?id=1)
+        // URL'den anket ID'sini yakala
         const urlParams = new URLSearchParams(window.location.search);
         const surveyId = urlParams.get('id');
 
@@ -88,28 +88,27 @@
             window.location.href = 'index.html';
         }
 
-        // Sayfa yüklenince soruları, anket detayını ve sonuçları getir
+        // Sayfa yüklenince verileri getir
         document.addEventListener("DOMContentLoaded", () => {
             fetchSurveyDetails();
             fetchQuestions();
             fetchSurveyResults();
         });
 
-        // --- ORTAK YETKİ KONTROL FONKSİYONU ---
+        // Ortak Yetki Kontrolü
         function checkUnauthorized(response) {
-            if (response.status === 401) {
+            if (response.status === 401 || response.status === 403) {
                 alert("Oturum süreniz dolmuş veya yetkiniz yok. Lütfen tekrar giriş yapın.");
-                window.location.href = 'login.html';
+                window.location.replace('login.html');
                 return true;
             }
             return false;
         }
 
-        // 1. Anket Başlığını ve Açıklamasını Çek
+        // 1. Anket Başlığını Çek
         async function fetchSurveyDetails() {
             try {
                 const response = await fetch('/api/v1/surveys', { credentials: 'include' });
-                
                 if (checkUnauthorized(response)) return;
 
                 if (response.ok) {
@@ -218,7 +217,7 @@
             }
         });
 
-        // 5. Anket Sonuçlarını Çek ve Listele (Düzeltildi: inv.completed)
+        // 5. Anket Sonuçlarını Çek
         async function fetchSurveyResults() {
             const resultsContainer = document.getElementById('resultsList');
             try {
@@ -234,7 +233,6 @@
                     const invitations = await response.json();
                     resultsContainer.innerHTML = '';
 
-                    // Lombok isimlendirme kuralından ötürü alan adı 'completed' olarak filtreleniyor
                     const completedInvitations = invitations.filter(inv => inv.completed);
 
                     if (completedInvitations.length === 0) {
@@ -272,6 +270,5 @@
             }
         }
     </script>
-
 </body>
 </html>

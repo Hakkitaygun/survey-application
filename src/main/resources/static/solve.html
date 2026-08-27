@@ -89,6 +89,7 @@
 
         async function fetchSurveyByToken(tokenVal) {
             try {
+                // Lokal Backend'e İstek Atılır
                 const response = await fetch(`/api/v1/answers/solve?token=${tokenVal}`, {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' }

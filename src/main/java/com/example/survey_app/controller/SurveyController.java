@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.survey_app.dto.SurveyResponse;
 import com.example.survey_app.entity.Survey;
 import com.example.survey_app.entity.SurveyInvitation;
 import com.example.survey_app.service.SurveyService;
@@ -26,8 +27,8 @@ public class SurveyController {
 private final SurveyService surveyService;
 
 @GetMapping
-public ResponseEntity<List<Survey>> getAllSurvey(){
-    List<Survey> surveys = surveyService.getAllSurveys();
+public ResponseEntity<List<SurveyResponse>> getAllSurvey(){
+    List<SurveyResponse> surveys = surveyService.getAllSurveys();
     return ResponseEntity.ok(surveys);
 }
 @PostMapping

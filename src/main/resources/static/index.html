@@ -7,7 +7,8 @@
     
     <!-- OTOMATİK OTURUM KONTROLÜ VE GİRİŞ SAYFASINA YÖNLENDİRME -->
     <script>
-        const API_BASE_URL = 'https://survey-application-q4ko.onrender.com';
+        // Sadece bağıl yol kullanıyoruz (localhost'ta otomatik çalışır)
+        const API_BASE_URL = ''; 
         
         // Sayfa yüklenir yüklenmez backend'e istek atıp oturum durumunu test et
         fetch(`${API_BASE_URL}/api/v1/surveys`, {
@@ -161,7 +162,7 @@
                     return;
                 }
 
-                if (response.status === 201) {
+                if (response.status === 201 || response.ok) {
                     messageDiv.style.color = 'green';
                     messageDiv.textContent = 'Anket başarıyla oluşturuldu!';
                     document.getElementById('surveyForm').reset();
