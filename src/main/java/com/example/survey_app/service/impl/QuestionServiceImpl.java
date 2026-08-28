@@ -5,6 +5,8 @@ import com.example.survey_app.service.QuestionService;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,7 @@ public class QuestionServiceImpl implements QuestionService {
     private final ModelMapper modelMapper;
 
     @Override
+    @CacheEvict(value ="survey_details", key = "#surveyId")
     public QuestionResponse addQuestionToSurvey(Long surveyId, QuestionCreateRequest questionRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = authentication.getName();
@@ -43,6 +46,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
+    @Cacheable(value ="survey_details", key = "#surveyId")
     public List<QuestionResponse> getQuestionbySurvey(Long surveyId) {
         Survey foundSurvey = surveyRepository.findById(surveyId)
                 .orElseThrow(() -> new RuntimeException("Belirtilen ID'ye sahip anket bulunamadı: " + surveyId));

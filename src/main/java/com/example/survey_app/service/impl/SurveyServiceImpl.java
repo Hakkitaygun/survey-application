@@ -1,6 +1,9 @@
 package com.example.survey_app.service.impl;
 
 import com.example.survey_app.service.SurveyService;
+
+import jakarta.transaction.Transactional;
+
 import com.example.survey_app.controller.QuestionController;
 import java.util.List;
 
@@ -18,6 +21,10 @@ import com.example.survey_app.entity.User;
 import com.example.survey_app.repository.SurveyInvitationRepository;
 import com.example.survey_app.repository.SurveyRepository;
 import com.example.survey_app.repository.UserRepository;
+
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.modelmapper.ModelMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -31,6 +38,7 @@ public class SurveyServiceImpl implements SurveyService {
 
 
     @Override
+    @Cacheable(value = "user_surveys", key = "T(org.springframework.security.core.context.SecurityContextHolder).getContext().getAuthentication().getName()")
     public List<SurveyResponse> getAllSurveys() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = authentication.getName();
@@ -44,6 +52,7 @@ public class SurveyServiceImpl implements SurveyService {
     }
 
     @Override
+    @CacheEvict(value = "user_surveys", key = "T(org.springframework.security.core.context.SecurityContextHolder).getContext().getAuthentication().getName()")
     public Survey createSurvey(Survey survey) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = authentication.getName();
@@ -60,6 +69,11 @@ public class SurveyServiceImpl implements SurveyService {
 }
 
     @Override
+    @Transactional
+    @Caching(evict = {
+        @CacheEvict(value = "user_surveys", key = "T(org.springframework.security.core.context.SecurityContextHolder).getContext().getAuthentication().getName()"),
+        @CacheEvict(value = "survey_details", key = "#surveyId")
+    })
     public SurveyResponse updateSurvey(Long surveyId, SurveyRequest surveyRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = authentication.getName();
@@ -96,6 +110,11 @@ public class SurveyServiceImpl implements SurveyService {
     }
 
     @Override
+    @Transactional
+    @Caching(evict = {
+        @CacheEvict(value = "user_surveys", key = "T(org.springframework.security.core.context.SecurityContextHolder).getContext().getAuthentication().getName()"),
+        @CacheEvict(value = "survey_details", key = "#surveyId")
+    })
     public Survey deleteSurvey(Long surveyId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = authentication.getName();
