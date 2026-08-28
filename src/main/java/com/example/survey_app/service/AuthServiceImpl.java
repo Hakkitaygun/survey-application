@@ -9,7 +9,7 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
 
-import com.example.survey_app.dto.LoginRequest;
+import com.example.survey_app.dto.request.LoginRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

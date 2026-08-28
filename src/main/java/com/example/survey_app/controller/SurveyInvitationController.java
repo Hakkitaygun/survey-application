@@ -1,7 +1,7 @@
 package com.example.survey_app.controller;
 
 import org.springframework.web.bind.annotation.RestController;
-import com.example.survey_app.dto.SurveyInvitationRequest;
+import com.example.survey_app.dto.request.SurveyInvitationRequest;
 import com.example.survey_app.service.SurveyInvitationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;

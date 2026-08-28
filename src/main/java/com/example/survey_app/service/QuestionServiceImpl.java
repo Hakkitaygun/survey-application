@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 import com.example.survey_app.repository.QuestionRepository;
 import com.example.survey_app.repository.SurveyRepository;
 import com.example.survey_app.entity.Survey;
-import com.example.survey_app.dto.QuestionCreateRequest;
-import com.example.survey_app.dto.QuestionResponse;
+import com.example.survey_app.dto.request.QuestionCreateRequest;
+import com.example.survey_app.dto.response.QuestionResponse;
 import com.example.survey_app.entity.Question;
 
 import lombok.RequiredArgsConstructor;

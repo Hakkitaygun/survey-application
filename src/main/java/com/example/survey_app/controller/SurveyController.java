@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.survey_app.dto.SurveyRequest;
-import com.example.survey_app.dto.SurveyResponse;
+import com.example.survey_app.dto.request.SurveyRequest;
+import com.example.survey_app.dto.response.SurveyResponse;
 import com.example.survey_app.entity.Survey;
 import com.example.survey_app.entity.SurveyInvitation;
 import com.example.survey_app.service.SurveyService;

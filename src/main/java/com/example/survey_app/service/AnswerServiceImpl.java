@@ -7,8 +7,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.survey_app.dto.AnswerSubmitRequest;
-import com.example.survey_app.dto.SurveyResponse;
+import com.example.survey_app.dto.request.AnswerSubmitRequest;
+import com.example.survey_app.dto.response.SurveyResponse;
 import com.example.survey_app.entity.Answer;
 import com.example.survey_app.entity.Question;
 import com.example.survey_app.entity.Survey;

@@ -2,8 +2,8 @@ package com.example.survey_app.service;
 
 import java.util.List;
 
-import com.example.survey_app.dto.SurveyRequest;
-import com.example.survey_app.dto.SurveyResponse;
+import com.example.survey_app.dto.request.SurveyRequest;
+import com.example.survey_app.dto.response.SurveyResponse;
 import com.example.survey_app.entity.Survey;
 import com.example.survey_app.entity.SurveyInvitation;
 

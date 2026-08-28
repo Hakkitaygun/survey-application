@@ -5,7 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-import com.example.survey_app.dto.SurveyInvitationRequest;
+import com.example.survey_app.dto.request.SurveyInvitationRequest;
 import com.example.survey_app.entity.Survey;
 import com.example.survey_app.entity.SurveyInvitation;
 import com.example.survey_app.repository.SurveyInvitationRepository;

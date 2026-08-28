@@ -6,9 +6,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import com.example.survey_app.dto.QuestionResponse;
-import com.example.survey_app.dto.SurveyRequest;
-import com.example.survey_app.dto.SurveyResponse;
+import com.example.survey_app.dto.request.SurveyRequest;
+import com.example.survey_app.dto.response.QuestionResponse;
+import com.example.survey_app.dto.response.SurveyResponse;
 import com.example.survey_app.entity.Question;
 import com.example.survey_app.entity.Survey;
 import com.example.survey_app.entity.SurveyInvitation;

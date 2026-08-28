@@ -2,7 +2,7 @@ package com.example.survey_app.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.example.survey_app.dto.LoginRequest;
+import com.example.survey_app.dto.request.LoginRequest;
 import com.example.survey_app.service.AuthService;
 
 import jakarta.servlet.http.HttpServletRequest;

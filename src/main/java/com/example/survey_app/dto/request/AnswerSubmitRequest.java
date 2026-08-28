@@ -1,4 +1,4 @@
-package com.example.survey_app.dto;
+package com.example.survey_app.dto.request;
 
 import java.util.List;
 import lombok.AllArgsConstructor;

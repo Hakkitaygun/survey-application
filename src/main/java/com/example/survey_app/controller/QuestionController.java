@@ -3,8 +3,8 @@ package com.example.survey_app.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.survey_app.dto.QuestionCreateRequest;
-import com.example.survey_app.dto.QuestionResponse;
+import com.example.survey_app.dto.request.QuestionCreateRequest;
+import com.example.survey_app.dto.response.QuestionResponse;
 import com.example.survey_app.service.QuestionService;
 
 import lombok.RequiredArgsConstructor;

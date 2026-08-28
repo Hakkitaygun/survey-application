@@ -1,4 +1,4 @@
-package com.example.survey_app.dto;
+package com.example.survey_app.dto.response;
 
 import java.util.List;
 

@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.survey_app.dto.AnswerSubmitRequest;
-import com.example.survey_app.dto.SurveyResponse;
+import com.example.survey_app.dto.request.AnswerSubmitRequest;
+import com.example.survey_app.dto.response.SurveyResponse;
 import com.example.survey_app.service.AnswerService;
 
 import lombok.RequiredArgsConstructor;
