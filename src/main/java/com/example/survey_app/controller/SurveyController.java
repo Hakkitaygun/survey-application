@@ -3,13 +3,16 @@ package com.example.survey_app.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.survey_app.dto.SurveyRequest;
 import com.example.survey_app.dto.SurveyResponse;
 import com.example.survey_app.entity.Survey;
 import com.example.survey_app.entity.SurveyInvitation;
@@ -42,4 +45,15 @@ public ResponseEntity<List<SurveyInvitation>> getSurveyResult(@PathVariable Long
     return ResponseEntity.ok(results);
 }
 
+@PutMapping("/{surveyId}/update")
+public ResponseEntity<SurveyResponse> updateSurvey(@PathVariable Long surveyId, @RequestBody SurveyRequest surveyRequest){
+    SurveyResponse surveyResponse = surveyService.updateSurvey(surveyId,surveyRequest);
+    return ResponseEntity.ok(surveyResponse);
+}
+
+@DeleteMapping("/{surveyId}/delete")
+public ResponseEntity deleteSurvey(@PathVariable Long surveyId){
+    Survey survey = surveyService.deleteSurvey(surveyId);
+    return ResponseEntity.ok(survey);
+}
 }
