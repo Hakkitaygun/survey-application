@@ -43,7 +43,6 @@ public class SurveyInvitationImpl implements SurveyInvitationService {
             System.out.println("E-posta başarıyla gönderildi: " + surveyInvitationRequest.getReceiverEmail());
             
         } catch (Exception e) {
-            // Hatanın tam detayı konsola yazılacak
             System.err.println("MAİL GÖNDERME HATASI: " + e.getMessage());
             e.printStackTrace();
             throw new RuntimeException("Mail gönderilemedi: " + e.getMessage());

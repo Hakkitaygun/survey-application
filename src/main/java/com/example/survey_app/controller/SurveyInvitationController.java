@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-// URL'yi REST standartlarına göre güncelledik (başındaki / işaretini unutmamak önemli)
 @RequestMapping("/api/v1/surveys") 
 @RequiredArgsConstructor
 public class SurveyInvitationController {
@@ -22,7 +21,6 @@ public class SurveyInvitationController {
     public ResponseEntity<String> sendEmail(@PathVariable Long surveyId, @RequestBody SurveyInvitationRequest surveyInvitationRequest) {
         surveyInvitationService.sendEmail(surveyId, surveyInvitationRequest);
         
-        // .body() ekleyerek işlemi tamamladık ve mesajımızı yazdık
         return ResponseEntity.status(201).body("Davetiye başarıyla gönderildi!");
     }
 }

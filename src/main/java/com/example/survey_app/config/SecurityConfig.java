@@ -25,7 +25,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // Sonsuz döngü (StackOverflow) hatasını kesin olarak çözen manuel ProviderManager tanımı:
     @Bean
     public AuthenticationManager authenticationManager(UserDetailsServiceImpl userDetailsService, PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -39,7 +38,6 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
            .csrf(csrf -> csrf.disable())
-           // H2 konsolunun düzgün açılabilmesi için frame korumasını kapatıyoruz
            .headers(headers -> headers.frameOptions(frame -> frame.disable()))
            .authorizeHttpRequests(auth -> auth
             .requestMatchers("/User/user", "/api/auth/login", "/login.html", "/register.html", "/*.html", "/h2-console/**").permitAll()
