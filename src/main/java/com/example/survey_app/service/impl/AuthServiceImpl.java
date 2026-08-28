@@ -1,4 +1,6 @@
-package com.example.survey_app.service;
+package com.example.survey_app.service.impl;
+
+import com.example.survey_app.service.AuthService;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

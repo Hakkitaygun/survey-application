@@ -1,4 +1,6 @@
-package com.example.survey_app.service;
+package com.example.survey_app.service.impl;
+
+import com.example.survey_app.service.UserService;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

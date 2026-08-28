@@ -1,4 +1,4 @@
-package com.example.survey_app.service;
+package com.example.survey_app.service.impl;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;

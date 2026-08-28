@@ -1,4 +1,6 @@
-package com.example.survey_app.service;
+package com.example.survey_app.service.impl;
+
+import com.example.survey_app.service.QuestionService;
 
 import java.util.List;
 
